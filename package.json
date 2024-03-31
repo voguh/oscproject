@@ -1,5 +1,5 @@
 {
-  "name": "@oscproject/osc",
+  "name": "@oscproject/desktop",
   "license": "LGPL-3.0",
   "scripts": {
     "dev": "webpack serve --config ./webapp/webpack.config.js",
