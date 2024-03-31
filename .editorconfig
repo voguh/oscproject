@@ -8,5 +8,8 @@ charset = utf-8
 trim_trailing_whitespace = false
 insert_final_newline = false
 
+[.github/**/*]
+indent_size = 2
+
 [webapp/**/*]
 indent_size = 2

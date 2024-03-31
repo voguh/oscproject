@@ -44,9 +44,13 @@ jobs:
         run: yarn install
 
       - name: Create secrets
-        run: |
-          echo ${{ secrets.RUST_SECRET }} > ./src/utils/secrets.rs
-          echo ${{ secrets.WEBAPP_SECRET }} > ./webapp/src/utils/secrets.ts
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs')
+            const path = require('path')
+            fs.writeFileSync(path.resolve(__dirname, '/src/utils/secrets.rs'), '${{ secrets.RUST_SECRET }}')
+            fs.writeFileSync(path.resolve(__dirname, '/webapp/src/utils/secrets.ts'), '${{ secrets.WEBAPP_SECRET }}')
 
       - name: Build the app
         uses: tauri-apps/tauri-action@v0
