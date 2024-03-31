@@ -43,14 +43,19 @@ jobs:
       - name: Install frontend dependencies
         run: yarn install
 
-      - name: Create secrets
-        uses: actions/github-script@v7
+      - name: Create secrets (Rust)
+        uses: 1arp/create-a-file-action@0.4.4
         with:
-          script: |
-            const fs = require('fs')
-            const path = require('path')
-            fs.writeFileSync(path.resolve(__dirname, '/src/utils/secrets.rs'), '${{ secrets.RUST_SECRET }}')
-            fs.writeFileSync(path.resolve(__dirname, '/webapp/src/utils/secrets.ts'), '${{ secrets.WEBAPP_SECRET }}')
+          path: 'src/utils'
+          file: 'secrets.rs'
+          content: ${{ secrets.RUST_SECRET }}
+
+      - name: Create secrets (Typescript)
+        uses: 1arp/create-a-file-action@0.4.4
+        with:
+          path: 'webapp/src/utils'
+          file: 'secrets.ts'
+          content: ${{ secrets.WEBAPP_SECRET }}
 
       - name: Build the app
         uses: tauri-apps/tauri-action@v0
