@@ -32,6 +32,11 @@ pub struct SESocketService {
 
 /* ============================================================================================== */
 
+fn emit(event_type: &str, payload: serde_json::Value) -> Result<(), tauri::Error> {
+    let main_window = APP_HANDLE.get().unwrap().get_window("main").unwrap();
+    main_window.emit(event_type, payload)
+}
+
 fn parse_payload(payload: Payload) -> serde_json::Value {
     let string_payload: String = match payload {
         Payload::String(str) => str,
@@ -58,10 +63,14 @@ impl SESocketService {
     }
 
     pub fn connect(&mut self, jwt_token: String) {
+        if let Some(socket) = &self.socket {
+            let _ = socket.disconnect();
+        }
+
         let on_connect = move |raw_payload: Payload, socket: RawClient| {
             let payload = parse_payload(raw_payload);
             let event = mount_payload(&SESocketEvent::Connected, payload);
-            APP_HANDLE.get().unwrap().emit_all(SE_SOCKET_EVENT, event).unwrap();
+            emit(SE_SOCKET_EVENT, event).unwrap();
 
             let auth_payload = serde_json::json!({ "method": "jwt", "token": jwt_token });
             socket.emit("authenticate", auth_payload).expect("Server unreachable");
@@ -70,25 +79,25 @@ impl SESocketService {
         let on_disconnect = |raw_payload: Payload, _socket: RawClient| {
             let payload = parse_payload(raw_payload);
             let event = mount_payload(&SESocketEvent::Disconnected, payload);
-            APP_HANDLE.get().unwrap().emit_all(SE_SOCKET_EVENT, event).unwrap();
+            emit(SE_SOCKET_EVENT, event).unwrap();
         };
         
         let on_authenticated = |raw_payload: Payload, _socket: RawClient| {
             let payload = parse_payload(raw_payload);
             let event = mount_payload(&SESocketEvent::Authorized, payload);
-            APP_HANDLE.get().unwrap().emit_all(SE_SOCKET_EVENT, event).unwrap();
+            emit(SE_SOCKET_EVENT, event).unwrap();
         };
         
         let on_unauthorized = |raw_payload: Payload, _socket: RawClient| {
             let payload = parse_payload(raw_payload);
             let event = mount_payload(&SESocketEvent::Unauthorized, payload);
-            APP_HANDLE.get().unwrap().emit_all(SE_SOCKET_EVENT, event).unwrap();
+            emit(SE_SOCKET_EVENT, event).unwrap();
         };
         
         let on_event = |raw_payload: Payload, _socket: RawClient| {
             let payload = parse_payload(raw_payload);
             let event = mount_payload(&SESocketEvent::Event, payload);
-            APP_HANDLE.get().unwrap().emit_all(SE_SOCKET_EVENT, event).unwrap();
+            emit(SE_SOCKET_EVENT, event).unwrap();
         };
 
         let socket = ClientBuilder::new(SE_URL).transport_type(TransportType::Websocket)
