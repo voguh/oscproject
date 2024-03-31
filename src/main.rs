@@ -6,7 +6,7 @@ mod utils;
 
 use once_cell::sync::OnceCell;
 use streamelements::INSTANCE;
-use tauri::Manager;
+use tauri::{CustomMenuItem, Manager, SystemTray, SystemTrayEvent, SystemTrayMenu};
 
 use crate::utils::secrets::STRONGHOLD_SECRET;
 
@@ -41,10 +41,45 @@ fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
     Ok(APP_HANDLE.set(app.app_handle()).unwrap())
 }
 
+fn on_system_tray_event(app: &tauri::AppHandle, event: tauri::SystemTrayEvent) {
+    let window = app.get_window("main").unwrap();
+
+    match event {
+        SystemTrayEvent::MenuItemClick { id, .. } => {
+            match id.as_str() {
+                "show" => {
+                    window.show().unwrap();
+                }
+                "quit" => {
+                    window.close().unwrap();
+                }
+                _ => {}
+            }
+        }
+        _ => {}
+      }
+}
+
+fn on_window_event(event: tauri::GlobalWindowEvent) {
+    match event.event() {
+        tauri::WindowEvent::CloseRequested { api, .. } => {
+            event.window().hide().unwrap();
+            api.prevent_close();
+        }
+        _ => {}
+    }
+}
+
 fn main() {
     let stronghold = tauri_plugin_stronghold::Builder::new(setup_stronghold).build();
+
+    let tray_menu = SystemTrayMenu::new()
+        .add_item(CustomMenuItem::new("quit", "Quit"))
+        .add_item(CustomMenuItem::new("show", "Show"));
     
-    tauri::Builder::default().plugin(stronghold).setup(setup)
+    tauri::Builder::default().system_tray(SystemTray::new().with_menu(tray_menu)).plugin(stronghold).setup(setup)
+        .on_system_tray_event(on_system_tray_event)
+        .on_window_event(on_window_event)
         .invoke_handler(tauri::generate_handler![connect, disconnect])
         .run(tauri::generate_context!())
         .expect("An error occurred on Open Streamer Companion");
