@@ -33,14 +33,15 @@ export const App: React.FC = () => {
   async function handleConnectDisconnect(): Promise<void> {
     if (connectStatus === 'disconnected') {
       await storageService.set<string>('jwt_token', token)
+      setConnectStatus('connecting')
       await invoke('connect', { token })
     } else if (connectStatus === 'connected') {
-      setConnectStatus('connecting')
       await invoke('disconnect')
     }
   }
 
   async function handleEventMessage(event: SESocketEventMessage): Promise<void> {
+    console.log(event)
     for (const module of modulesExtensionService.listModules()) {
       if (module.onEvent) {
         module.onEvent(event.data)
@@ -76,6 +77,8 @@ export const App: React.FC = () => {
       const token = await storageService.get<string>('jwt_token')
       if (token != null && token.trim() !== '') {
         setToken(token)
+        await invoke('connect', { token })
+        setConnectStatus('connecting')
       }
 
       setInitialized(true)
@@ -102,21 +105,24 @@ export const App: React.FC = () => {
           </Paper>
 
           <Paper withBorder className="osc-modules" display={selectedModule == null ? 'flex' : 'none'}>
-            {modulesExtensionService.listModules().map((mod) => {
-              if (mod.description) {
-                return (
-                  <Tooltip key={mod.id} label={mod.description}>
-                    <Button onClick={() => setSelectedModule(mod)}>{mod.displayName}</Button>
-                  </Tooltip>
-                )
-              }
+            {modulesExtensionService
+              .listModules()
+              .filter((mod) => mod.render)
+              .map((mod) => {
+                if (mod.description) {
+                  return (
+                    <Tooltip key={mod.id} label={mod.description}>
+                      <Button onClick={() => setSelectedModule(mod)}>{mod.displayName}</Button>
+                    </Tooltip>
+                  )
+                }
 
-              return (
-                <Button key={mod.id} onClick={() => setSelectedModule(mod)}>
-                  {mod.displayName}
-                </Button>
-              )
-            })}
+                return (
+                  <Button key={mod.id} onClick={() => setSelectedModule(mod)}>
+                    {mod.displayName}
+                  </Button>
+                )
+              })}
           </Paper>
 
           <Paper
