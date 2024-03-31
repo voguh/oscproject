@@ -1,3 +1,10 @@
 {
-  "rust-analyzer.showUnlinkedFileNotification": false
+  "rust-analyzer.showUnlinkedFileNotification": false,
+  "cssVariables.lookupFiles": [
+    "webapp/src/**/*.css",
+    "webapp/src/**/*.scss",
+    "webapp/src/**/*.sass",
+    "webapp/src/**/*.less",
+    "node_modules/@mantine/core/styles.css"
+  ]
 }

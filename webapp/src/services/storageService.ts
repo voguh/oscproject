@@ -1,6 +1,7 @@
 import { path } from '@tauri-apps/api'
-import { STRONGHOLD_CLIENT, STRONGHOLD_KEY } from '~/utils/secrets'
 import { Client, Stronghold } from 'tauri-plugin-stronghold-api'
+
+import { STRONGHOLD_CLIENT, STRONGHOLD_KEY } from '~/utils/secrets'
 
 const STRONGHOLD_NAME = 'storage.osc'
 

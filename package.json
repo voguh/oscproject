@@ -10,10 +10,18 @@
     "test": "vite-jest --config ./webapp/jest.config.js"
   },
   "dependencies": {
+    "@mantine/core": "^7.7.1",
+    "@mantine/form": "^7.7.1",
+    "@mantine/hooks": "^7.7.1",
+    "@mantine/modals": "^7.7.1",
+    "@mantine/notifications": "^7.7.1",
     "@tauri-apps/api": "^1.5.3",
+    "async": "^3.2.5",
     "polished": "^4.3.1",
     "react": "^18.2.0",
+    "react-custom-scrollbars-2": "^4.5.0",
     "react-dom": "^18.2.0",
+    "react-icons": "^5.0.1",
     "styled-components": "^6.1.8",
     "tauri-plugin-stronghold-api": "https://github.com/tauri-apps/tauri-plugin-stronghold#v1"
   },
@@ -23,6 +31,7 @@
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^14.2.2",
     "@testing-library/user-event": "^14.5.2",
+    "@types/async": "^3.2.24",
     "@types/jest": "^29.5.12",
     "@types/react": "^18.2.73",
     "@types/react-dom": "^18.2.23",

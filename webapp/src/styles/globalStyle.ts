@@ -1,58 +1,71 @@
 import { createGlobalStyle } from 'styled-components'
 
 export const GlobalStyle = createGlobalStyle`
-  * {
-    box-sizing: border-box;
-    outline: none;
+  html, body, #root, #root > .osc-container {
+    width: 100%;
+    height: 100%;
   }
 
-  html, body, #root {
-    background: #495057;
-  }
+  #root > .osc-container {
+    padding: var(--mantine-spacing-sm);
 
-  #root {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    > .mantine-Paper-root {
+      padding: var(--mantine-spacing-sm);
+      box-shadow: var(--mantine-shadow-sm);
 
-    > form {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-
-      > input {
-        height: 36px;
-        padding: 4px 8px;
-        background: #212529;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        width: 500px;
-      }
-
-      > button {
-        height: 36px;
-        font-weight: 800;
-        background: #1c7ed6;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-
-        &:disabled {
-          opacity: 0.75;
-          cursor: not-allowed;
-        }
+      &:not(:first-child) {
+        margin-top: var(--mantine-spacing-sm);
       }
     }
 
-    > p {
-      font-weight: 800;
-      color: #fff;
+    > .se-connection-status {
+      display: flex;
+      justify-content: center;
+      gap: var(--mantine-spacing-sm);
+
+      > .mantine-InputWrapper-root {
+        flex: 1;
+      }
+
+      > * {
+        align-self: flex-end;
+      }
+    }
+
+    > .osc-modules {
+      justify-content: center;
+      gap: var(--mantine-spacing-sm);
+    }
+
+    > .osc-module-display {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: var(--mantine-spacing-sm);
+
+      > .osc-module-header {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        gap: var(--mantine-spacing-sm);
+        
+        > .osc-module-title {
+          flex: 1;
+        }
+
+        > button {
+          width: 25px;
+          height: 25px;
+          padding: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+
+      > .osc-module-body {
+        position: relative;
+      }
     }
   }
 `

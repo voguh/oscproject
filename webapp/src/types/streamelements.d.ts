@@ -1,20 +1,16 @@
 /* eslint-disable prettier/prettier */
 declare interface SESocketEventConnected {
-  type: 'SESocketEvent::connected'
+  type: 'socket_connected'
   data: unknown
 }
 
 declare interface SESocketEventDisconnected {
-  type: 'SESocketEvent::disconnected'
+  type: 'socket_disconnected'
   data: unknown
-  // data: {
-  //   reason: string
-  //   description: import('socket.io-client/build/esm/socket').DisconnectDescription
-  // }
 }
 
 declare interface SESocketEventAuthenticated {
-  type: 'SESocketEvent::authorized'
+  type: 'socket_authorized'
   data: {
     clientId: string
     channelId: string
@@ -24,7 +20,7 @@ declare interface SESocketEventAuthenticated {
 }
 
 declare interface SESocketEventUnauthorized {
-  type: 'SESocketEvent::unauthorized'
+  type: 'socket_unauthorized'
   data: {
     message: string
   }
@@ -87,11 +83,11 @@ declare type SETipEvent = SEBaseEvent<'tip', {
   message: string
 }>
 
-declare interface SESocketEventEvent {
-  type: 'SESocketEvent::event'
+declare interface SESocketEventMessage {
+  type: 'event_message'
   data: SEBaseEvent
 }
 
 /* ============================================================================================== */
 
-declare type SESocketEvent = SESocketEventConnected | SESocketEventDisconnected | SESocketEventAuthenticated | SESocketEventUnauthorized | SESocketEventEvent
+declare type SESocketEvent = SESocketEventConnected | SESocketEventDisconnected | SESocketEventAuthenticated | SESocketEventUnauthorized | SESocketEventMessage

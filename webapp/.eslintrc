@@ -69,6 +69,7 @@
         "groups": [
           "/^react/",
           "module",
+          "/^~/",
           [
             "parent",
             "sibling",
