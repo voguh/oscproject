@@ -78,13 +78,13 @@ export const SettingsModal: React.FC = () => {
                 <Button fullWidth onClick={managePoints(-10)}>
                   -10
                 </Button>
-                <Button fullWidth onClick={managePoints(100)}>
+                <Button fullWidth onClick={managePoints(10)}>
                   +10
                 </Button>
                 <Button fullWidth onClick={managePoints(50)}>
                   +50
                 </Button>
-                <Button fullWidth onClick={managePoints(10)}>
+                <Button fullWidth onClick={managePoints(100)}>
                   +100
                 </Button>
               </div>
