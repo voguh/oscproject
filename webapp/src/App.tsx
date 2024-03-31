@@ -1,31 +1,30 @@
 import React from 'react'
 
-import { invoke } from '@tauri-apps/api'
+import { event, invoke } from '@tauri-apps/api'
 
 import { GlobalStyle } from './styles/globalStyle'
+import { SE_SOCKET_EVENT } from './utils/constants'
 
 export const App: React.FC = () => {
-  const [greetMsg, setGreetMsg] = React.useState('')
-  const [name, setName] = React.useState('')
-
-  async function greet(): Promise<void> {
-    const greetingMessage = await invoke<string>('greet', { name })
-    setGreetMsg(greetingMessage)
+  async function onSubmit(): Promise<void> {
+    try {
+      await invoke('connect')
+    } catch (e) {
+      console.log(e)
+    }
   }
 
-  function onSubmit(e: React.FormEvent<HTMLFormElement>): void {
-    e.preventDefault()
-    greet()
+  async function onSESocketEvents(...args: Record<string, any>[]): Promise<void> {
+    console.log(args)
   }
+
+  React.useEffect(() => {
+    event.listen(SE_SOCKET_EVENT, onSESocketEvents)
+  }, [])
 
   return (
     <>
-      <form onSubmit={onSubmit}>
-        <input id="greet-input" onChange={(e) => setName(e.currentTarget.value)} placeholder="Enter a name..." />
-        <button type="submit">Greet</button>
-      </form>
-
-      <p>{greetMsg}</p>
+      <button onClick={onSubmit}>Connect</button>
 
       <GlobalStyle />
     </>
