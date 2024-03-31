@@ -1,4 +1,5 @@
 import { path } from '@tauri-apps/api'
+import { STRONGHOLD_CLIENT, STRONGHOLD_KEY } from '~/utils/secrets'
 import { Client, Stronghold } from 'tauri-plugin-stronghold-api'
 
 const STRONGHOLD_NAME = 'storage.osc'
@@ -12,13 +13,13 @@ class StorageService {
   public async initialize(): Promise<void> {
     const appDataDir = await path.appDataDir()
     const strongholdPath = await path.resolve(appDataDir, STRONGHOLD_NAME)
-    // this._stronghold = await Stronghold.load(this._strongholdPath, <STRONGHOLD_PASSWORD>)
+    this._stronghold = await Stronghold.load(strongholdPath, STRONGHOLD_KEY)
 
-    // try {
-    //   this._client = await this._stronghold.loadClient(<STRONGHOLD_CLIENT>)
-    // } catch {
-    //   this._client = await this._stronghold.createClient(<STRONGHOLD_CLIENT>)
-    // }
+    try {
+      this._client = await this._stronghold.loadClient(STRONGHOLD_CLIENT)
+    } catch {
+      this._client = await this._stronghold.createClient(STRONGHOLD_CLIENT)
+    }
   }
 
   public async get<R>(key: string, defaultValue?: R): Promise<R> {

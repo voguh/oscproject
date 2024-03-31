@@ -2,18 +2,20 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod streamelements;
+mod utils;
 
 use once_cell::sync::OnceCell;
-use rand::Rng;
 use streamelements::INSTANCE;
 use tauri::Manager;
+
+use crate::utils::secrets::STRONGHOLD_SECRET;
 
 static APP_HANDLE: OnceCell<tauri::AppHandle> = OnceCell::new();
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
-fn connect(name: String) {
-    INSTANCE.lock().unwrap().connect(name);
+fn connect(token: String) {
+    INSTANCE.lock().unwrap().connect(token);
 }
 
 #[tauri::command]
@@ -22,9 +24,7 @@ fn disconnect() {
 }
 
 fn setup_stronghold(password: &str) -> Vec<u8> {
-    use argon2::Config;
-
-    let config = Config {
+    let config = argon2::Config {
         lanes: 4,
         mem_cost: 10_000,
         time_cost: 10,
@@ -33,9 +33,7 @@ fn setup_stronghold(password: &str) -> Vec<u8> {
         ..Default::default()
     };
 
-    let mut rng = rand::thread_rng();
-    let random_bytes: Vec<u8> = (0..10).map(|_| rng.gen::<u8>()).collect();
-    let salt = random_bytes.as_slice();
+    let salt = STRONGHOLD_SECRET.as_bytes();
     argon2::hash_raw(password.as_ref(), salt, &config).expect("Failed to hash password")
 }
 
@@ -44,9 +42,9 @@ fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 }
 
 fn main() {
-    tauri::Builder::default()
-        .plugin(tauri_plugin_stronghold::Builder::new(setup_stronghold).build())
-        .setup(setup)
+    let stronghold = tauri_plugin_stronghold::Builder::new(setup_stronghold).build();
+    
+    tauri::Builder::default().plugin(stronghold).setup(setup)
         .invoke_handler(tauri::generate_handler![connect, disconnect])
         .run(tauri::generate_context!())
         .expect("An error occurred on Open Streamer Companion");

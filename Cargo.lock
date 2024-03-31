@@ -2271,7 +2271,6 @@ name = "oscproject"
 version = "0.1.0"
 dependencies = [
  "once_cell",
- "rand 0.8.5",
  "rust-argon2 2.1.0",
  "rust_socketio",
  "serde",

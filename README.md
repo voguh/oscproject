@@ -1,6 +1,23 @@
 # Open Streamer Companion
 
 
+## Development run
+
+To run the project in development mode, it's necessary to create the files src/utils/secrets.rs and webapp/src/utils/secrets.ts.
+
+Example:
+```rust
+// secrets.rs
+pub static STRONGHOLD_SECRET: &str = "my-stronghold-secret";
+```
+
+```typescript
+// secrets.ts
+export const STRONGHOLD_KEY = 'my-stronghold-key'
+export const STRONGHOLD_CLIENT = 'my-stronghold-client'
+```
+
+
 ### Build
 
 The command below will create a container of `Debian Bookworm` and will execute the `./zztools/build.sh` script.

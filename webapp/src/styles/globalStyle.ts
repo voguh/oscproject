@@ -41,9 +41,11 @@ export const GlobalStyle = createGlobalStyle`
         color: #fff;
         border: none;
         border-radius: 4px;
+        cursor: pointer;
 
         &:disabled {
           opacity: 0.75;
+          cursor: not-allowed;
         }
       }
     }

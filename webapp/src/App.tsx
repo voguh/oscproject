@@ -7,15 +7,15 @@ import { GlobalStyle } from './styles/globalStyle'
 import { SE_SOCKET_EVENT } from './utils/constants'
 
 export const App: React.FC = () => {
-  const [jwtToken, setJwtToken] = React.useState('')
+  const [token, setToken] = React.useState('')
   const [initialized, setInitialized] = React.useState(false)
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault()
 
     try {
-      await storageService.set<string>('jwt_token', jwtToken)
-      await invoke('connect', { jwt_token: jwtToken })
+      await storageService.set<string>('jwt_token', token)
+      await invoke('connect', { token })
     } catch (e) {
       console.log(e)
     }
@@ -31,10 +31,9 @@ export const App: React.FC = () => {
 
       event.listen(SE_SOCKET_EVENT, onSESocketEvents)
 
-      const jwtToken = await storageService.get<string>('jwt_token')
-      console.log('aaaaa', jwtToken)
-      if (jwtToken != null && jwtToken.trim() !== '') {
-        setJwtToken(jwtToken)
+      const token = await storageService.get<string>('jwt_token')
+      if (token != null && token.trim() !== '') {
+        setToken(token)
       }
 
       setInitialized(true)
@@ -52,11 +51,11 @@ export const App: React.FC = () => {
       <form onSubmit={onSubmit}>
         <input
           type="password"
-          value={jwtToken}
-          onChange={(e) => setJwtToken(e.currentTarget.value)}
+          value={token}
+          onChange={(e) => setToken(e.currentTarget.value)}
           placeholder="Enter a StreamElements JWT token..."
         />
-        <button disabled={!initialized || jwtToken == null || jwtToken.trim() === ''}>Connect</button>
+        <button disabled={initialized === false || token == null || token.trim() === ''}>Connect</button>
       </form>
 
       <GlobalStyle />

@@ -10,3 +10,7 @@
 /node_modules
 /webapp/coverage
 /webapp/dist
+
+# Secrets
+/src/utils/secrets.rs
+/webapp/src/utils/secrets.ts
