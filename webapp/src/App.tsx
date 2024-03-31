@@ -89,6 +89,16 @@ export const App: React.FC = () => {
 
   React.useEffect(() => {
     init()
+
+    function onContextMenu(ev: MouseEvent): void {
+      ev.preventDefault()
+    }
+
+    document.addEventListener('contextmenu', onContextMenu)
+
+    return () => {
+      document.removeEventListener('contextmenu', onContextMenu)
+    }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
