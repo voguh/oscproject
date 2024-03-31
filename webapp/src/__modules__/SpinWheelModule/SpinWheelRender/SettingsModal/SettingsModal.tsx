@@ -1,12 +1,13 @@
 import React from 'react'
-import Scrollbars from 'react-custom-scrollbars-2'
 import { FaCog, FaPlus, FaSave, FaTrash } from 'react-icons/fa'
+import { Scrollbar } from 'react-scrollbars-custom'
 
 import { Button, Input, Modal, Switch, Text, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
 
 import { useDimensions } from '~/hooks/useDimensions'
 
+import { updateTries } from '../../constants'
 import { SpinWheelContext } from '../SpinWheelRender'
 import { EntryStyledBox, SettingsButton, SettingsContainer, StyledBox } from './styled'
 
@@ -24,6 +25,10 @@ export const SettingsModal: React.FC = () => {
 
   function handleAdd(): void {
     insertListItem('entries', [1, 'New item'])
+  }
+
+  function managePoints(val: number) {
+    return () => updateTries.push(val)
   }
 
   function handleSave(_data: SpinWheelConfig): void {
@@ -59,8 +64,38 @@ export const SettingsModal: React.FC = () => {
         <FaCog />
       </SettingsButton>
       <Modal opened={settingsModal} onClose={() => setSettingsModal(false)} size="lg" title="Settings" centered>
-        <SettingsContainer>
-          <form onSubmit={onSubmit(handleSave)}>
+        <SettingsContainer onSubmit={onSubmit(handleSave)} style={{ height: dimensions.height - (120 + 32) }}>
+          <Scrollbar className="form-content" style={{ height: 'calc(100% - (36px + var(--mantine-spacing-sm)))' }}>
+            <StyledBox>
+              <Text fw="800">Points</Text>
+              <div className="styled-box-content">
+                <Button fullWidth onClick={managePoints(-100)}>
+                  -100
+                </Button>
+                <Button fullWidth onClick={managePoints(-50)}>
+                  -50
+                </Button>
+                <Button fullWidth onClick={managePoints(-10)}>
+                  -10
+                </Button>
+                <Button fullWidth onClick={managePoints(100)}>
+                  +10
+                </Button>
+                <Button fullWidth onClick={managePoints(50)}>
+                  +50
+                </Button>
+                <Button fullWidth onClick={managePoints(10)}>
+                  +100
+                </Button>
+              </div>
+            </StyledBox>
+
+            <StyledBox
+              style={{ marginTop: 'var(--mantine-spacing-sm)', marginBottom: 'calc(var(--mantine-spacing-sm) * -1)' }}
+            >
+              <Text fw="800">Settings</Text>
+            </StyledBox>
+
             <StyledBox style={{ gridTemplateColumns: '100px 1fr 1fr' }}>
               <Input.Wrapper label="Allow mock">
                 <div style={{ height: 36, display: 'flex', alignItems: 'center' }}>
@@ -75,20 +110,36 @@ export const SettingsModal: React.FC = () => {
               <TextInput type="number" label="Spin speed" {...getInputProps('spinSpeed')} />
             </StyledBox>
 
-            <StyledBox style={{ marginTop: 16 }}>
+            <StyledBox>
               <Text fw="800">Thresholds</Text>
-              <div style={{ display: 'grid', gap: 8, gridTemplateColumns: '100px 1fr 1fr 1fr 1fr' }}>
+              <div className="styled-box-content">
                 <TextInput type="number" label="Bits" {...getInputProps('thresholds.bits')} />
                 <TextInput type="number" label="Tip" {...getInputProps('thresholds.tip')} />
-                <TextInput type="number" label="Sub Tier 1" {...getInputProps('thresholds.sub.1000')} />
-                <TextInput type="number" label="Sub Tier 2" {...getInputProps('thresholds.sub.2000')} />
-                <TextInput type="number" label="Sub Tier 3" {...getInputProps('thresholds.sub.3000')} />
               </div>
             </StyledBox>
 
-            <Scrollbars style={{ marginTop: 16, height: dimensions.height - 400 }}>
-              <StyledBox>
-                <Text fw="800">Entries</Text>
+            <StyledBox>
+              <Text fw="800">Sub points per tier</Text>
+              <div className="styled-box-content">
+                <TextInput type="number" label="Sub Prime" {...getInputProps('thresholds.sub.prime')} />
+                <TextInput type="number" label="Sub T1" {...getInputProps('thresholds.sub.1000')} />
+                <TextInput type="number" label="Sub T2" {...getInputProps('thresholds.sub.2000')} />
+                <TextInput type="number" label="Sub T3" {...getInputProps('thresholds.sub.3000')} />
+              </div>
+            </StyledBox>
+
+            <StyledBox>
+              <Text fw="800">Entries</Text>
+
+              <div
+                className="items"
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  marginTop: 'calc(var(--mantine-spacing-sm) * -1)',
+                  gap: 'var(--mantine-spacing-sm)'
+                }}
+              >
                 {values?.entries?.map((value, idx) => (
                   <EntryStyledBox key={idx}>
                     <TextInput type="number" {...getInputProps(`entries.${idx}.0`)} />
@@ -98,18 +149,17 @@ export const SettingsModal: React.FC = () => {
                     </Button>
                   </EntryStyledBox>
                 ))}
+              </div>
 
-                <EntryStyledBox>
-                  <Button variant="light" color="green" fullWidth onClick={handleAdd} leftSection={<FaPlus />}>
-                    Add item
-                  </Button>
-                </EntryStyledBox>
-              </StyledBox>
-            </Scrollbars>
-            <Button type="submit" variant="light" fullWidth mt="lg" leftSection={<FaSave />}>
-              Save
-            </Button>
-          </form>
+              <Button variant="light" color="green" fullWidth onClick={handleAdd} leftSection={<FaPlus />}>
+                Add item
+              </Button>
+            </StyledBox>
+          </Scrollbar>
+
+          <Button type="submit" variant="light" fullWidth leftSection={<FaSave />}>
+            Save
+          </Button>
         </SettingsContainer>
       </Modal>
     </>

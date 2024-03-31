@@ -68,4 +68,21 @@ export const GlobalStyle = createGlobalStyle`
       }
     }
   }
+
+  .ScrollbarsCustom {
+    > .ScrollbarsCustom-Wrapper {
+      inset: 0 !important;
+    }
+
+    > .ScrollbarsCustom-Track.ScrollbarsCustom-TrackY {
+      width: 6px !important;
+      top: 5px !important;
+      right: -13px !important;
+      height: calc(100% - 10px) !important;
+
+      > .ScrollbarsCustom-Thumb.ScrollbarsCustom-ThumbY {
+        /* background: var(--mantine-color-gray-9) !important; */
+      }
+    }
+  }
 `

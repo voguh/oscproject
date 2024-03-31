@@ -1,29 +1,53 @@
 import styled from 'styled-components'
 
-export const SettingsContainer = styled.div``
+export const SettingsContainer = styled.form`
+  > .form-content {
+    > .ScrollbarsCustom-Wrapper > .ScrollbarsCustom-Scroller > .ScrollbarsCustom-Content {
+      display: flex;
+      flex-direction: column;
+      gap: var(--mantine-spacing-sm);
+    }
+  }
+
+  > button {
+    margin-top: var(--mantine-spacing-sm);
+  }
+`
 
 export const StyledBox = styled.div`
   display: grid;
-  gap: 8px;
+  gap: var(--mantine-spacing-sm);
 
   > .mantine-InputWrapper-root {
     width: 100%;
+  }
+
+  > .styled-box-content {
+    display: flex;
+    margin-top: calc(var(--mantine-spacing-sm) * -1);
+    gap: var(--mantine-spacing-sm);
+
+    > .mantine-InputWrapper-root {
+      width: 100%;
+    }
   }
 `
 
 export const EntryStyledBox = styled.div`
   display: flex;
-  gap: 8px;
+  gap: var(--mantine-spacing-sm);
 
   > * {
     flex-shrink: 0;
   }
 
   > .mantine-InputWrapper-root {
-    width: calc(100% - (75px + 16px + 36px));
-
     &:first-child {
       width: 75px;
+    }
+
+    &:not(:first-child) {
+      flex: 1;
     }
   }
 

@@ -19,9 +19,9 @@
     "async": "^3.2.5",
     "polished": "^4.3.1",
     "react": "^18.2.0",
-    "react-custom-scrollbars-2": "^4.5.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
+    "react-scrollbars-custom": "^4.1.1",
     "styled-components": "^6.1.8",
     "tauri-plugin-stronghold-api": "https://github.com/tauri-apps/tauri-plugin-stronghold#v1"
   },
