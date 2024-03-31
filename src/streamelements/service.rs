@@ -28,7 +28,6 @@ impl SESocketEvent {
 
 pub struct SESocketService {
     socket: Option<rust_socketio::client::Client>,
-    jwt_token: Option<String>,
 }
 
 /* ============================================================================================== */
@@ -54,17 +53,11 @@ fn mount_payload(event_type: &SESocketEvent, data: serde_json::Value) -> serde_j
 impl SESocketService {
     pub fn new() -> Self {
         Self {
-            socket: None,
-            jwt_token: None
+            socket: None
         }
     }
 
-    pub fn connect(&mut self) {
-        let jwt_token = match &self.jwt_token {
-            Some(token) => token.clone(),
-            None => String::new(), // ou outra string padrão de sua escolha
-        };
-
+    pub fn connect(&mut self, jwt_token: String) {
         let on_connect = move |raw_payload: Payload, socket: RawClient| {
             let payload = parse_payload(raw_payload);
             let event = mount_payload(&SESocketEvent::Connected, payload);

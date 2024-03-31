@@ -12,7 +12,8 @@
     "polished": "^4.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "styled-components": "^6.1.8"
+    "styled-components": "^6.1.8",
+    "tauri-plugin-stronghold-api": "https://github.com/tauri-apps/tauri-plugin-stronghold#v1"
   },
   "devDependencies": {
     "@babel/core": "^7.24.3",
@@ -87,7 +88,14 @@
       "ecmaVersion": 12,
       "sourceType": "module"
     },
-    "plugins": ["react", "@typescript-eslint", "react-hooks", "prettier", "eslint-plugin-import-helpers", "jest"],
+    "plugins": [
+      "react",
+      "@typescript-eslint",
+      "react-hooks",
+      "prettier",
+      "eslint-plugin-import-helpers",
+      "jest"
+    ],
     "rules": {
       "prettier/prettier": "warn",
       "jest/no-disabled-tests": "warn",
@@ -100,7 +108,15 @@
       "react/jsx-one-expression-per-line": "off",
       "react/jsx-props-no-spreading": "off",
       "react/prop-types": "off",
-      "react/jsx-filename-extension": ["error", { "extensions": [".jsx", ".tsx"] }],
+      "react/jsx-filename-extension": [
+        "error",
+        {
+          "extensions": [
+            ".jsx",
+            ".tsx"
+          ]
+        }
+      ],
       "@typescript-eslint/explicit-function-return-type": [
         "warn",
         {
@@ -119,8 +135,19 @@
         "warn",
         {
           "newlinesBetween": "always",
-          "groups": ["/^react/", "module", ["parent", "sibling", "index"]],
-          "alphabetize": { "order": "asc", "ignoreCase": true }
+          "groups": [
+            "/^react/",
+            "module",
+            [
+              "parent",
+              "sibling",
+              "index"
+            ]
+          ],
+          "alphabetize": {
+            "order": "asc",
+            "ignoreCase": true
+          }
         }
       ],
       "prefer-const": "warn",
@@ -131,7 +158,12 @@
       "no-plusplus": "off",
       "class-methods-use-this": "off",
       "no-unused-vars": "off",
-      "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          "argsIgnorePattern": "^_"
+        }
+      ],
       "no-use-before-define": "off",
       "@typescript-eslint/no-use-before-define": "error",
       "no-useless-constructor": "off",
@@ -141,9 +173,9 @@
       "max-len": "off"
     },
     "settings": {
-        "react": {
-            "version": "detect"
-        }
+      "react": {
+        "version": "detect"
+      }
     }
   }
 }
